@@ -1,9 +1,8 @@
 // Ganso Voting Pro - Supabase Version 🦢🔥
 
 // --- CONFIGURATION ---
-// VOCÊ PRECISA COLOCAR SEU URL E KEY AQUI DEPOIS DE CRIAR O PROJETO NO SUPABASE!
-const SUPABASE_URL = 'https://SEU-PROJETO.supabase.co';
-const SUPABASE_KEY = 'SUA-ANON-KEY-AQUI';
+const SUPABASE_URL = 'https://cqqjevbjooeeoazanzwgm.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_m9mTQkjlLQDajmiXGaSIfg_6e1BtJr0';
 
 const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
