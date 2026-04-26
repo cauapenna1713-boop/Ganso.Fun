@@ -4,7 +4,7 @@
 const SUPABASE_URL = 'https://cqqjevbjooeeoazanzwgm.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_m9mTQkjlLQDajmiXGaSIfg_6e1BtJr0';
 
-const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // --- UI ELEMENTS ---
 const elements = {
@@ -64,7 +64,7 @@ elements.authSubmitBtn.onclick = async () => {
     const password = elements.passwordInput.value.trim();
     
     if (isRegisterMode) {
-        const { data, error } = await supabase
+        const { data, error } = await supabaseClient
             .from('users')
             .insert([{ username, password, isAdmin: false }])
             .select();
@@ -72,7 +72,7 @@ elements.authSubmitBtn.onclick = async () => {
         if (error) return alert("Erro ao registrar: " + error.message);
         currentUser = data[0];
     } else {
-        const { data, error } = await supabase
+        const { data, error } = await supabaseClient
             .from('users')
             .select('*')
             .eq('username', username)
@@ -97,7 +97,7 @@ function logout() {
 // --- POLL LOGIC ---
 async function loadPolls() {
     // Carrega enquetes e votos
-    const { data: polls, error } = await supabase
+    const { data: polls, error } = await supabaseClient
         .from('polls')
         .select('*, votes(*)');
         
@@ -148,7 +148,7 @@ async function handleVote(pollId, optionIndex) {
     if (!currentUser) return showAuth(false);
     
     // 1. Pega voto atual do usuário para esta enquete
-    const { data: currentVote, error: fetchError } = await supabase
+    const { data: currentVote, error: fetchError } = await supabaseClient
         .from('votes')
         .select('*')
         .eq('poll_id', pollId)
@@ -156,7 +156,7 @@ async function handleVote(pollId, optionIndex) {
         .single();
 
     let newIndices = currentVote ? [...currentVote.option_indices] : [];
-    const poll = (await supabase.from('polls').select('*').eq('id', pollId).single()).data;
+    const poll = (await supabaseClient.from('polls').select('*').eq('id', pollId).single()).data;
 
     const existingIndex = newIndices.indexOf(optionIndex);
     
@@ -171,9 +171,9 @@ async function handleVote(pollId, optionIndex) {
     }
 
     if (currentVote) {
-        await supabase.from('votes').update({ option_indices: newIndices }).eq('id', currentVote.id);
+        await supabaseClient.from('votes').update({ option_indices: newIndices }).eq('id', currentVote.id);
     } else {
-        await supabase.from('votes').insert([{ 
+        await supabaseClient.from('votes').insert([{ 
             poll_id: pollId, 
             username: currentUser.username, 
             option_indices: newIndices 
@@ -185,8 +185,8 @@ async function handleVote(pollId, optionIndex) {
 
 async function deletePoll(pollId) {
     if (confirm("Tem certeza que deseja deletar esta votação?")) {
-        await supabase.from('votes').delete().eq('poll_id', pollId);
-        await supabase.from('polls').delete().eq('id', pollId);
+        await supabaseClient.from('votes').delete().eq('poll_id', pollId);
+        await supabaseClient.from('polls').delete().eq('id', pollId);
         loadPolls();
     }
 }
@@ -206,7 +206,7 @@ elements.createPollBtn.onclick = async () => {
     const isMultiple = document.getElementById('multiple-choice').checked;
 
     if (question && options.length >= 2) {
-        const { error } = await supabase.from('polls').insert([{
+        const { error } = await supabaseClient.from('polls').insert([{
             question,
             options,
             isMultiple,
@@ -230,7 +230,7 @@ elements.createPollBtn.onclick = async () => {
 updateAuthUI();
 
 // Real-time listener (Opcional: substitui o setInterval)
-supabase.channel('custom-all-channel')
+supabaseClient.channel('custom-all-channel')
   .on('postgres_changes', { event: '*', schema: 'public', table: 'polls' }, loadPolls)
   .on('postgres_changes', { event: '*', schema: 'public', table: 'votes' }, loadPolls)
   .subscribe();
