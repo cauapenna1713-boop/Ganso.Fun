@@ -1,7 +1,11 @@
-// Ganso Voting Pro - Core Logic (API Version)
+// Ganso Voting Pro - Supabase Version 🦢🔥
 
 // --- CONFIGURATION ---
-const API_BASE_URL = 'http://localhost:3000/api'; // Mude para a URL do seu deploy depois!
+// VOCÊ PRECISA COLOCAR SEU URL E KEY AQUI DEPOIS DE CRIAR O PROJETO NO SUPABASE!
+const SUPABASE_URL = 'https://SEU-PROJETO.supabase.co';
+const SUPABASE_KEY = 'SUA-ANON-KEY-AQUI';
+
+const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // --- UI ELEMENTS ---
 const elements = {
@@ -26,28 +30,6 @@ const elements = {
 
 let currentUser = JSON.parse(localStorage.getItem('ganso_session')) || null;
 let isRegisterMode = false;
-
-// --- API FETCHERS ---
-async function apiFetch(endpoint, method = 'GET', body = null) {
-    const options = {
-        method,
-        headers: { 'Content-Type': 'application/json' }
-    };
-    if (body) options.body = JSON.stringify(body);
-    
-    try {
-        const res = await fetch(`${API_BASE_URL}${endpoint}`, options);
-        if (!res.ok) {
-            const error = await res.json();
-            throw new Error(error.message || 'Erro na API');
-        }
-        return await res.json();
-    } catch (err) {
-        console.error(err);
-        alert(err.message);
-        return null;
-    }
-}
 
 // --- AUTH LOGIC ---
 function updateAuthUI() {
@@ -82,15 +64,29 @@ elements.authSubmitBtn.onclick = async () => {
     const username = elements.usernameInput.value.trim();
     const password = elements.passwordInput.value.trim();
     
-    const endpoint = isRegisterMode ? '/register' : '/login';
-    const result = await apiFetch(endpoint, 'POST', { username, password });
-    
-    if (result && result.success) {
-        currentUser = result.user;
-        localStorage.setItem('ganso_session', JSON.stringify(currentUser));
-        elements.authOverlay.classList.add('hidden');
-        updateAuthUI();
+    if (isRegisterMode) {
+        const { data, error } = await supabase
+            .from('users')
+            .insert([{ username, password, isAdmin: false }])
+            .select();
+            
+        if (error) return alert("Erro ao registrar: " + error.message);
+        currentUser = data[0];
+    } else {
+        const { data, error } = await supabase
+            .from('users')
+            .select('*')
+            .eq('username', username)
+            .eq('password', password)
+            .single();
+            
+        if (error || !data) return alert("Usuário ou senha incorretos!");
+        currentUser = data;
     }
+    
+    localStorage.setItem('ganso_session', JSON.stringify(currentUser));
+    elements.authOverlay.classList.add('hidden');
+    updateAuthUI();
 };
 
 function logout() {
@@ -101,12 +97,20 @@ function logout() {
 
 // --- POLL LOGIC ---
 async function loadPolls() {
-    const polls = await apiFetch('/polls');
-    if (polls) renderPolls(polls);
+    // Carrega enquetes e votos
+    const { data: polls, error } = await supabase
+        .from('polls')
+        .select('*, votes(*)');
+        
+    if (error) return console.error(error);
+    renderPolls(polls);
 }
 
 function renderPolls(polls) {
     elements.pollsList.innerHTML = '';
+    // Ordenar por data (mais recentes primeiro)
+    polls.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
     polls.forEach((poll) => {
         const canDelete = currentUser && (currentUser.isAdmin || currentUser.username === poll.creator);
         
@@ -114,11 +118,14 @@ function renderPolls(polls) {
         pollEl.className = 'poll-card';
         
         const optionsHtml = poll.options.map((opt, oIdx) => {
-            const hasVoted = poll.votes[currentUser?.username]?.includes(oIdx);
+            const userVotes = poll.votes.find(v => v.username === currentUser?.username);
+            const hasVoted = userVotes?.option_indices.includes(oIdx);
+            const voteCount = poll.votes.filter(v => v.option_indices.includes(oIdx)).length;
+
             return `
-                <button class="vote-btn ${hasVoted ? 'active' : ''}" onclick="handleVote(${poll.id}, ${oIdx})">
+                <button class="vote-btn ${hasVoted ? 'active' : ''}" onclick="handleVote('${poll.id}', ${oIdx})">
                     <span>${opt}</span>
-                    <span class="vote-count">${getOptionVoteCount(poll, oIdx)}</span>
+                    <span class="vote-count">${voteCount}</span>
                 </button>
             `;
         }).join('');
@@ -126,7 +133,7 @@ function renderPolls(polls) {
         pollEl.innerHTML = `
             <div class="poll-header">
                 <div class="poll-question">${poll.question}</div>
-                ${canDelete ? `<button class="btn-danger" onclick="deletePoll(${poll.id})">DELETAR</button>` : ''}
+                ${canDelete ? `<button class="btn-danger" onclick="deletePoll('${poll.id}')">DELETAR</button>` : ''}
             </div>
             <div class="options-grid">${optionsHtml}</div>
             <div class="poll-meta">
@@ -138,29 +145,50 @@ function renderPolls(polls) {
     });
 }
 
-function getOptionVoteCount(poll, oIdx) {
-    let count = 0;
-    Object.values(poll.votes).forEach(userVotes => {
-        if (userVotes.includes(oIdx)) count++;
-    });
-    return count;
-}
-
 async function handleVote(pollId, optionIndex) {
     if (!currentUser) return showAuth(false);
     
-    const result = await apiFetch(`/polls/${pollId}/vote`, 'POST', {
-        username: currentUser.username,
-        optionIndex
-    });
+    // 1. Pega voto atual do usuário para esta enquete
+    const { data: currentVote, error: fetchError } = await supabase
+        .from('votes')
+        .select('*')
+        .eq('poll_id', pollId)
+        .eq('username', currentUser.username)
+        .single();
+
+    let newIndices = currentVote ? [...currentVote.option_indices] : [];
+    const poll = (await supabase.from('polls').select('*').eq('id', pollId).single()).data;
+
+    const existingIndex = newIndices.indexOf(optionIndex);
     
-    if (result) loadPolls();
+    if (existingIndex !== -1) {
+        newIndices.splice(existingIndex, 1);
+    } else {
+        if (!poll.isMultiple) {
+            newIndices = [optionIndex];
+        } else {
+            newIndices.push(optionIndex);
+        }
+    }
+
+    if (currentVote) {
+        await supabase.from('votes').update({ option_indices: newIndices }).eq('id', currentVote.id);
+    } else {
+        await supabase.from('votes').insert([{ 
+            poll_id: pollId, 
+            username: currentUser.username, 
+            option_indices: newIndices 
+        }]);
+    }
+    
+    loadPolls();
 }
 
 async function deletePoll(pollId) {
     if (confirm("Tem certeza que deseja deletar esta votação?")) {
-        const result = await apiFetch(`/polls/${pollId}?username=${currentUser.username}`, 'DELETE');
-        if (result && result.success) loadPolls();
+        await supabase.from('votes').delete().eq('poll_id', pollId);
+        await supabase.from('polls').delete().eq('id', pollId);
+        loadPolls();
     }
 }
 
@@ -179,15 +207,14 @@ elements.createPollBtn.onclick = async () => {
     const isMultiple = document.getElementById('multiple-choice').checked;
 
     if (question && options.length >= 2) {
-        const result = await apiFetch('/polls', 'POST', {
+        const { error } = await supabase.from('polls').insert([{
             question,
             options,
             isMultiple,
             creator: currentUser.username
-        });
+        }]);
         
-        if (result) {
-            // Reset
+        if (!error) {
             document.getElementById('poll-question').value = '';
             elements.optionsContainer.innerHTML = `
                 <input type="text" class="poll-option-input" placeholder="Opção 1">
@@ -202,5 +229,9 @@ elements.createPollBtn.onclick = async () => {
 
 // --- INIT ---
 updateAuthUI();
-// Polling for real-time updates (optional)
-setInterval(loadPolls, 5000); 
+
+// Real-time listener (Opcional: substitui o setInterval)
+supabase.channel('custom-all-channel')
+  .on('postgres_changes', { event: '*', schema: 'public', table: 'polls' }, loadPolls)
+  .on('postgres_changes', { event: '*', schema: 'public', table: 'votes' }, loadPolls)
+  .subscribe();
