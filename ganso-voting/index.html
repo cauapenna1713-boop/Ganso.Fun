@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ganso Voting Pro | Discord Style Polls</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="hub-nav">
+        <a href="../index.html">← VOLTAR AO HUB</a>
+        <div id="user-display" class="user-info">
+            <!-- User info or Login button will appear here -->
+        </div>
+    </nav>
+
+    <!-- Auth Modal -->
+    <div id="auth-overlay" class="modal-overlay hidden">
+        <div class="modal">
+            <h2 id="auth-title">Entrar</h2>
+            <div class="input-group">
+                <input type="text" id="username" placeholder="Usuário">
+                <input type="password" id="password" placeholder="Senha">
+                <button id="auth-submit-btn" class="btn-primary">ENTRAR</button>
+                <p class="toggle-auth">Não tem conta? <span id="toggle-auth-link">Registrar-se</span></p>
+            </div>
+            <button id="close-auth" class="btn-secondary">CANCELAR</button>
+        </div>
+    </div>
+
+    <div class="app-container">
+        <header>
+            <h1>Ganso Voting Pro 🦢</h1>
+            <p>Votações avançadas com contas e permissões.</p>
+        </header>
+
+        <section id="create-poll-section" class="create-poll panel hidden">
+            <h2>Criar Nova Votação</h2>
+            <div class="input-group">
+                <input type="text" id="poll-question" placeholder="Qual a sua pergunta?">
+                <div id="options-container">
+                    <input type="text" class="poll-option-input" placeholder="Opção 1">
+                    <input type="text" class="poll-option-input" placeholder="Opção 2">
+                </div>
+                <button id="add-option" class="btn-secondary">+ Adicionar Opção</button>
+                
+                <div class="poll-settings">
+                    <label class="checkbox-container">
+                        <input type="checkbox" id="multiple-choice">
+                        <span class="checkmark"></span>
+                        Permitir múltipla escolha
+                    </label>
+                </div>
+
+                <button id="create-poll-btn" class="btn-primary">PUBLICAR VOTAÇÃO</button>
+            </div>
+        </section>
+
+        <div id="guest-msg" class="panel centered">
+            <p>Você precisa estar logado para criar votações e votar.</p>
+            <button id="guest-login-btn" class="btn-primary">FAZER LOGIN AGORA</button>
+        </div>
+
+        <section id="polls-list" class="polls-list">
+            <!-- Polls will appear here -->
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

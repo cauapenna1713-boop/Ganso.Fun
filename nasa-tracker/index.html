@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nasa Tracker | Explore the Cosmos</title>
+    <meta name="description" content="Track NASA missions, news, and launches in real-time with a modern, responsive dashboard.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@700;800&family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav style="position: fixed; top: 20px; left: 20px; z-index: 10000;">
+        <a href="../index.html" style="color: #fff; text-decoration: none; font-family: 'Inter', sans-serif; background: rgba(11, 61, 145, 0.8); padding: 8px 16px; border-radius: 4px; border: 1px solid #fc3d21;">← HUB</a>
+    </nav>
+    <nav class="navbar glass-nav">
+        <div class="container nav-container">
+            <a href="#" class="logo">
+                <i data-lucide="rocket"></i>
+                NASA Tracker
+            </a>
+            
+            <div class="nav-links">
+                <a href="index.html" class="nav-link active" data-i18n="nav_home">Home</a>
+                <a href="#news" class="nav-link" data-i18n="nav_news">News</a>
+                <a href="#launches" class="nav-link" data-i18n="nav_launches">Launches</a>
+                <a href="#satellites" class="nav-link" data-i18n="nav_satellites">Satellites</a>
+                <a href="#discoveries" class="nav-link" data-i18n="nav_discoveries">Discoveries</a>
+                <a href="#live" class="nav-link" data-i18n="nav_live">Live</a>
+                <a href="astronauts.html" class="nav-link" data-i18n="nav_astronauts">Astronauts</a>
+                <a href="iss.html" class="nav-link" data-i18n="nav_iss">ISS Tracker</a>
+            </div>
+            
+            <div class="nav-actions">
+                <!-- LANG WHEEL — Globe trigger button (replaces old PT/EN toggle) -->
+                <button id="lang-globe-btn" aria-label="Select language" title="Select language">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                    <span class="globe-code">EN</span>
+                </button>
+                <button id="random-article-btn" class="glass" title="Random Article" style="padding: 0.5rem 1rem; color: #00ff88; display: inline-flex; align-items: center; gap: 0.5rem; border-color: #00ff88; background: rgba(0, 255, 136, 0.1); cursor: pointer; transition: 0.3s;">
+                    <i data-lucide="dices" style="width: 18px;"></i> <span data-i18n="nav_random" style="font-weight: 600;">Random Article</span>
+                </button>
+                <button id="notification-btn" class="glass" title="Enable Notifications" style="padding: 0.5rem; background: none; color: white;">
+                    <i data-lucide="bell"></i>
+                </button>
+                <div class="search-container glass" style="display: inline-flex; align-items: center; padding: 0.5rem 1rem;">
+                    <i data-lucide="search" style="width: 18px; color: var(--text-muted);"></i>
+                    <input type="text" id="search-input" data-i18n="placeholder_search" placeholder="Search the cosmos..." style="background: none; border: none; color: white; margin-left: 0.5rem; outline: none;">
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <!-- APOD Hero Section -->
+        <section id="hero" class="hero">
+            <div class="hero-background" id="hero-bg"></div>
+            <div class="hero-content reveal">
+                <span class="card-label" id="hero-label" data-i18n="hero_label">Astronomy Picture of the Day</span>
+                <h1 class="hero-title" id="hero-title">Loading the Cosmos...</h1>
+                <p id="hero-desc" style="margin-bottom: 2rem; color: var(--text-muted);"></p>
+                <a href="#news" class="glass" style="padding: 1rem 2rem; color: white; text-decoration: none; display: inline-block; transition: 0.3s;" data-i18n="hero_cta">
+                    Explore Latest News <i data-lucide="arrow-down" style="display: inline; vertical-align: middle; width: 18px;"></i>
+                </a>
+            </div>
+        </section>
+
+        <div class="container">
+            <!-- Live Missions Section -->
+            <section id="live" style="margin-bottom: 4rem;">
+                <h2 style="margin-bottom: 2rem; display: flex; align-items: center; gap: 0.5rem; color: #00ff88;">
+                    <i data-lucide="radio" class="pulse"></i> <span data-i18n="section_live">Live Missions & Telemetry</span>
+                </h2>
+                <div id="live-container" class="section-grid" style="grid-template-columns: 1fr;">
+                    <!-- Live telemetry dashboard will be injected here -->
+                </div>
+            </section>
+
+            <!-- News Section -->
+            <section id="news">
+                <h2 style="margin-bottom: 2rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <i data-lucide="newspaper"></i> <span data-i18n="section_news">Latest NASA News</span>
+                </h2>
+                <div id="news-grid" class="section-grid">
+                    <!-- News cards will be injected here -->
+                </div>
+            </section>
+
+            <!-- Launches Section -->
+            <section id="launches" style="margin-top: 4rem;">
+                <h2 style="margin-bottom: 2rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <i data-lucide="rocket"></i> <span data-i18n="section_launches">NASA Missions</span>
+                </h2>
+                <div id="launches-grid" class="section-grid">
+                    <!-- Launch cards will be injected here -->
+                </div>
+            </section>
+
+            <!-- Satellites Section -->
+            <section id="satellites" style="margin-top: 4rem;">
+                <h2 style="margin-bottom: 2rem; display: flex; align-items: center; gap: 0.5rem; color: #bc00ff;">
+                    <i data-lucide="satellite"></i> <span data-i18n="section_satellites">NASA Satellites in Orbit</span>
+                </h2>
+                <div id="satellites-grid" class="section-grid">
+                    <!-- Satellite cards will be injected here -->
+                </div>
+            </section>
+
+            <!-- Discoveries Section -->
+            <section id="discoveries" style="margin-top: 4rem; padding-bottom: 4rem;">
+                <h2 style="margin-bottom: 2rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <i data-lucide="microscope"></i> <span data-i18n="section_discoveries">Scientific Discoveries</span>
+                </h2>
+                <div id="discoveries-grid" class="section-grid">
+                    <!-- Discovery cards will be injected here -->
+                </div>
+            </section>
+
+            <!-- Other Interactive Projects Section -->
+            <section id="outros-projetos" style="margin-top: 4rem; padding-bottom: 4rem;">
+                <h2 style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; color: var(--accent-secondary);">
+                    <i data-lucide="sparkles"></i> <span data-i18n="section_other_projects">Explore Further</span>
+                </h2>
+                <p data-i18n="other_projects_desc" style="margin-bottom: 2rem; color: var(--text-muted);">Discover other amazing projects from our space lab.</p>
+                
+                <div class="orrery-card">
+                    <div class="orrery-icon">🪐</div>
+                    <div class="orrery-content">
+                        <h3 data-i18n="orrery_title" style="font-family: var(--font-heading); font-size: 1.5rem; color: #fff; margin-bottom: 0.5rem;">Simulator: Interactive Solar System Orrery</h3>
+                        <p data-i18n="orrery_desc" style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem; line-height: 1.5;">Navigate our Solar System, control time, view interactive orbital data of moons and gas giants with physics-based precision.</p>
+                        <a href="https://cauapenna1713-boop.github.io/Orray-Tracker.coiso/" target="_blank" class="btn btn-primary orrery-btn" style="display: inline-flex; gap: 0.5rem; align-items: center;">
+                            <span data-i18n="orrery_btn">Open Orrery</span> <i data-lucide="external-link" style="width: 18px;"></i>
+                        </a>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer style="padding: 4rem 0; border-top: 1px solid var(--glass-border); text-align: center; color: var(--text-muted);">
+        <p data-i18n="footer_text">© 2026 NASA Tracker. Powered by NASA and The Space Devs APIs.</p>
+    </footer>
+
+    <!-- LANG WHEEL — Overlay HTML -->
+    <div id="lang-wheel-overlay" role="dialog" aria-modal="true" aria-label="Language selector">
+        <div id="lang-wheel-panel">
+            <!-- Header -->
+            <div class="lw-header">
+                <span class="lw-title">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                    Select Language
+                </span>
+                <button class="lw-close" id="lang-wheel-close" aria-label="Close">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+
+            <!-- Wheel viewport -->
+            <div class="lw-wheel-wrap" id="lw-wheel-wrap">
+                <div class="lw-marker"></div>
+                <div class="lw-list" id="lw-list"></div>
+            </div>
+
+            <!-- Preview text -->
+            <div class="lw-preview" id="lw-preview"></div>
+
+            <!-- Apply button -->
+            <button class="lw-apply" id="lw-apply">✦ Apply Language</button>
+        </div>
+    </div>
+
+    <!-- Main Application Logic -->
+    <script src="js/i18n.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/notifications.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/lang-wheel.js"></script>
+
+    <script src="app.js"></script>
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+        // Initialize Language
+        I18N.updateUI();
+    </script>
+</body>
+</html>
+

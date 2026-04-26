@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Harvard Rejection Generator</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+    <div style="position: absolute; top: 10px; left: 10px; z-index: 1000;">
+        <a href="../index.html" style="color: #a51c30; text-decoration: none; font-family: 'Inter', sans-serif; background: #fff; padding: 5px 10px; border-radius: 5px; border: 1px solid #a51c30; font-size: 0.8rem;">← VOLTAR</a>
+    </div>
+    <div class="app-container">
+        <div class="controls panel glass">
+            <h1>Harvard Meme Generator</h1>
+            <p>Customize a lendária carta de rejeição. Escreva sua própria frase para substituir "yo big Harv".</p>
+            
+            <div class="input-group">
+                <label for="custom-text">Substituir "yo big Harv" por:</label>
+                <input type="text" id="custom-text" placeholder='yo big Harv.' maxlength="60">
+            </div>
+
+            <div class="input-group">
+                <label for="logo-url">URL da Logo (opcional):</label>
+                <input type="text" id="logo-url" placeholder="Cole o link da imagem aqui...">
+            </div>
+            
+            <button id="download-btn" class="primary-btn">
+                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                Baixar Meme
+            </button>
+        </div>
+
+        <div class="preview-panel">
+            <div id="meme-container" class="meme">
+                <div class="meme-header">
+                    <img src="./logo.png" alt="Harvard Logo" class="harvard-logo" crossorigin="anonymous">
+                    <div class="harvard-header-text">
+                        <div class="title">HARVARD COLLEGE</div>
+                        <div class="subtitle">Admissions &amp; Financial Aid</div>
+                    </div>
+                </div>
+                <div class="meme-body">
+                    <div class="greeting">Dear "Twin" , <span class="emoji">🥀</span></div>
+                    <p class="indent">Please do not come within 100 miles of our university.</p>
+                    <p class="indent">You are the worst applicant we have seen in all of our history as a school.</p>
+                    <p class="indent">You really thought we'd let you "slide?"</p>
+                    <div class="ps">
+                        P.S. don't start an essay with "<span id="dynamic-text">yo big Harv.</span>"
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

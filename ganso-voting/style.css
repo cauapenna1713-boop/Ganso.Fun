@@ -1,0 +1,229 @@
+:root {
+    --discord-blurple: #5865F2;
+    --discord-dark: #36393F;
+    --discord-darker: #2F3136;
+    --discord-black: #202225;
+    --discord-text: #DCDDDE;
+    --discord-text-muted: #72767D;
+    --discord-white: #FFFFFF;
+    --discord-green: #43B581;
+    --discord-red: #ED4245;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--discord-dark);
+    color: var(--discord-text);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+}
+
+.hub-nav {
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.hub-nav a {
+    color: var(--discord-text-muted);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.username-label {
+    font-weight: 700;
+    color: var(--discord-white);
+}
+
+.btn-logout {
+    color: var(--discord-red);
+    cursor: pointer;
+    font-size: 0.8rem;
+    text-decoration: underline;
+}
+
+/* Modals */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 20000;
+    transition: opacity 0.3s;
+}
+
+.modal {
+    background: var(--discord-darker);
+    padding: 40px;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.hidden { display: none !important; }
+
+.toggle-auth {
+    font-size: 0.9rem;
+    margin-top: 15px;
+    text-align: center;
+}
+
+#toggle-auth-link {
+    color: var(--discord-blurple);
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+/* App Container */
+.app-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    color: var(--discord-white);
+    margin-bottom: 5px;
+}
+
+.panel {
+    background-color: var(--discord-darker);
+    padding: 30px;
+    border-radius: 8px;
+    margin-bottom: 40px;
+}
+
+.centered { text-align: center; }
+
+h2 {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    color: var(--discord-white);
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+input {
+    background-color: var(--discord-black);
+    border: none;
+    padding: 15px;
+    border-radius: 4px;
+    color: var(--discord-text);
+}
+
+.btn-primary, .btn-secondary, .btn-danger {
+    border: none;
+    padding: 15px;
+    border-radius: 4px;
+    font-weight: 700;
+    cursor: pointer;
+    text-transform: uppercase;
+}
+
+.btn-primary { background: var(--discord-blurple); color: #fff; }
+.btn-secondary { background: #4F545C; color: #fff; }
+.btn-danger { background: var(--discord-red); color: #fff; font-size: 0.7rem; padding: 5px 10px; }
+
+/* Checkbox */
+.poll-settings { margin-top: 10px; }
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-size: 0.9rem;
+    gap: 10px;
+}
+
+/* Poll Cards */
+.poll-card {
+    background-color: var(--discord-darker);
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.poll-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 15px;
+}
+
+.poll-question {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--discord-white);
+}
+
+.options-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.vote-btn {
+    background-color: var(--discord-black);
+    border: 2px solid transparent;
+    padding: 10px 20px;
+    border-radius: 4px;
+    color: var(--discord-text);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.2s;
+}
+
+.vote-btn:hover {
+    border-color: var(--discord-blurple);
+}
+
+.vote-btn.active {
+    border-color: var(--discord-blurple);
+    background-color: rgba(88, 101, 242, 0.2);
+}
+
+.vote-count {
+    font-weight: 900;
+    color: var(--discord-blurple);
+}
+
+.poll-meta {
+    margin-top: 15px;
+    font-size: 0.8rem;
+    color: var(--discord-text-muted);
+}
+
+.poll-type-badge {
+    background: #4F545C;
+    padding: 2px 6px;
+    border-radius: 3px;
+    margin-right: 10px;
+}

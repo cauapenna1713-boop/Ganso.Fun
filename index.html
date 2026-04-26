@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GansoFun | Games and stuff by Ganso</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Orbitron:wght@400;900&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #000000;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Inter', sans-serif;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            margin: 40px 0 60px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 3rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        header h1 span {
+            color: #555;
+            font-weight: 400;
+        }
+
+        header .logo-icon {
+            font-size: 2.5rem;
+        }
+
+        .subtitle {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            max-width: 960px;
+            width: 100%;
+        }
+
+        .card {
+            height: 140px;
+            border-radius: 15px;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.1s ease;
+            border: 2px solid rgba(0,0,0,0.05);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+        }
+
+        .card-title {
+            font-weight: 700;
+            font-size: 1.5rem;
+            z-index: 2;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        /* CARD: Rolex Brainrot */
+        .card-rolex {
+            background: #050505;
+            color: #39FF14;
+            font-family: 'Orbitron', sans-serif;
+            border: 3px solid #BF00FF;
+        }
+        .card-rolex::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: url('hub-assets/rolex_card.png') center;
+            background-size: cover;
+            opacity: 0.3;
+            filter: grayscale(1) contrast(1.5);
+        }
+
+        /* CARD: Português */
+        .card-portugues {
+            background: #fff9e6;
+            color: #2c3e50;
+            border: 3px solid #f1c40f;
+        }
+        .card-portugues::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: url('hub-assets/portugues_card.png') center;
+            background-size: cover;
+            opacity: 0.2;
+        }
+        .card-portugues .card-title {
+            font-family: 'Inter', sans-serif;
+            font-weight: 900;
+        }
+        .card-portugues::after {
+            content: "✍️";
+            position: absolute;
+            right: 15px;
+            bottom: 10px;
+            font-size: 2rem;
+            opacity: 0.5;
+        }
+
+        /* CARD: Solar Orrery */
+        .card-orrery {
+            background: #03060f;
+            color: #4fc3f7;
+            border: 3px solid #ffd54f;
+        }
+        .card-orrery::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: url('hub-assets/orrery_card.png') center;
+            background-size: cover;
+            opacity: 0.4;
+        }
+
+        /* CARD: NASA Tracker */
+        .card-nasa {
+            background: #0b3d91;
+            color: #ffffff;
+            border: 3px solid #fc3d21;
+        }
+        .card-nasa::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: url('hub-assets/nasa_card.png') center;
+            background-size: cover;
+            opacity: 0.3;
+        }
+
+        /* CARD: Yo Big Harv */
+        .card-harv {
+            background: #a51c30;
+            color: #ffffff;
+            border: 3px solid #000;
+        }
+        .card-harv::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: url('hub-assets/harv_card.png') center;
+            background-size: cover;
+            opacity: 0.4;
+        }
+
+        /* CARD: Ganso Voting */
+        .card-voting {
+            background: #36393f;
+            color: #5865f2;
+            border: 3px solid #5865f2;
+        }
+        .card-voting::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: url('hub-assets/voting_card.png') center;
+            background-size: cover;
+            opacity: 0.4;
+        }
+
+        /* CARD: Placeholder */
+        .card-placeholder {
+            background: #f8f9fa;
+            color: #ccc;
+            border: 2px dashed #ddd;
+            cursor: default;
+        }
+        .card-placeholder:hover {
+            transform: none;
+            box-shadow: none;
+        }
+        .card-placeholder .card-title {
+            font-size: 1rem;
+            font-weight: 400;
+        }
+
+        footer {
+            margin-top: 100px;
+            text-align: center;
+            padding-bottom: 40px;
+            color: #999;
+            font-size: 0.8rem;
+        }
+
+        footer strong {
+            color: #333;
+        }
+
+        @media (max-width: 600px) {
+            header h1 { font-size: 2rem; }
+            .grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>GANSO<span>FUN</span> <span class="logo-icon">🦢</span></h1>
+        <p class="subtitle">games and stuff by Ganso</p>
+    </header>
+
+    <main class="grid">
+        <!-- Card: Rolex Brainrot -->
+        <a href="rolex-brainrot/index.html" class="card card-rolex">
+            <span class="card-title">Rolex Brainrot</span>
+        </a>
+
+        <!-- Card: Português -->
+        <a href="portugues/index.html" class="card card-portugues">
+            <span class="card-title">Português Supremo</span>
+        </a>
+
+        <!-- Card: Solar Orrery -->
+        <a href="solar-orrery/index.html" class="card card-orrery">
+            <span class="card-title">Solar Orrery</span>
+        </a>
+
+        <!-- Card: NASA Tracker -->
+        <a href="nasa-tracker/index.html" class="card card-nasa">
+            <span class="card-title">NASA Tracker</span>
+        </a>
+
+        <!-- Card: Yo Big Harv -->
+        <a href="yo-big-harv/index.html" class="card card-harv">
+            <span class="card-title">Yo Big Harv</span>
+        </a>
+
+        <!-- Card: Ganso Voting -->
+        <a href="ganso-voting/index.html" class="card card-voting">
+            <span class="card-title">Ganso Voting</span>
+        </a>
+    </main>
+
+    <footer>
+        <p>&copy; <strong>TRALALASAHUR</strong></p>
+    </footer>
+</body>
+</html>

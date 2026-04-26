@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ISS Tracker | NASA Tracker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@700;800&family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="navbar glass-nav">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <i data-lucide="rocket"></i>
+                NASA Tracker
+            </a>
+            
+            <div class="nav-links">
+                <a href="index.html" class="nav-link" data-i18n="nav_home">Home</a>
+                <a href="index.html#news" class="nav-link" data-i18n="nav_news">News</a>
+                <a href="index.html#launches" class="nav-link" data-i18n="nav_launches">Launches</a>
+                <a href="index.html#satellites" class="nav-link" data-i18n="nav_satellites">Satellites</a>
+                <a href="index.html#discoveries" class="nav-link" data-i18n="nav_discoveries">Discoveries</a>
+                <a href="index.html#live" class="nav-link" data-i18n="nav_live">Live</a>
+                <a href="astronauts.html" class="nav-link" data-i18n="nav_astronauts">Astronauts</a>
+                <a href="iss.html" class="nav-link active" data-i18n="nav_iss">ISS Tracker</a>
+            </div>
+            
+            <div class="nav-actions">
+                <button id="lang-globe-btn" aria-label="Select language" title="Select language">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                    <span class="globe-code">EN</span>
+                </button>
+                <button id="random-article-btn" class="glass" title="Random Article" style="padding: 0.5rem 1rem; color: #00ff88; display: inline-flex; align-items: center; gap: 0.5rem; border-color: #00ff88; background: rgba(0, 255, 136, 0.1); cursor: pointer; transition: 0.3s;">
+                    <i data-lucide="dices" style="width: 18px;"></i> <span data-i18n="nav_random" style="font-weight: 600;">Random Article</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main style="padding-top: 100px;">
+        <div class="container">
+            <section id="iss" style="margin-bottom: 4rem;">
+                <h2 style="margin-bottom: 2rem; display: flex; align-items: center; gap: 0.5rem; color: #00ff88;">
+                    <i data-lucide="crosshair"></i> <span data-i18n="section_iss">ISS Live Tracker: Orbital Telemetry</span>
+                </h2>
+                <div id="iss-container" style="max-width: 800px; margin: 0 auto;">
+                    <!-- ISS telemetry card will be injected here -->
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer style="padding: 4rem 0; border-top: 1px solid var(--glass-border); text-align: center; color: var(--text-muted);">
+        <p data-i18n="footer_text">© 2026 NASA Tracker. Powered by NASA and The Space Devs APIs.</p>
+    </footer>
+
+    <!-- LANG WHEEL — Overlay HTML -->
+    <div id="lang-wheel-overlay" role="dialog" aria-modal="true" aria-label="Language selector">
+        <div id="lang-wheel-panel">
+            <div class="lw-header">
+                <span class="lw-title">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                    Select Language
+                </span>
+                <button class="lw-close" id="lang-wheel-close" aria-label="Close">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+            <div class="lw-wheel-wrap" id="lw-wheel-wrap">
+                <div class="lw-marker"></div>
+                <div class="lw-list" id="lw-list"></div>
+            </div>
+            <div class="lw-preview" id="lw-preview"></div>
+            <button class="lw-apply" id="lw-apply">✦ Apply Language</button>
+        </div>
+    </div>
+
+    <script src="js/i18n.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/notifications.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/lang-wheel.js"></script>
+    <script src="app.js"></script>
+    <script>
+        lucide.createIcons();
+        I18N.updateUI();
+    </script>
+</body>
+</html>
